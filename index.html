@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 25px 400px; 
+        }
+        .converter {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        input, select, .output {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .output {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            min-width: 80px;
+            text-align: center;
+            border-radius: 15%;
+        }
+    </style>
+</head>
+<body>
+<h3>Введите сумму:</h3>
+<div class="converter">
+    <input type="number" id="amount" placeholder="0" />
+    <select id="currency">
+        <option value="KZT">KZT</option>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+    </select>
+    <div class="output" id="output-kzt">-</div>
+    <div class="output" id="output-usd">-</div>
+    <div class="output" id="output-eur">-</div>
+</div>
+
+<script>
+    const rates = {
+        USD: { buy: 429, sell: 431 },
+        EUR: { buy: 507, sell: 509 },
+    };
+
+    const amountInput = document.getElementById("amount");
+    const currencySelect = document.getElementById("currency");
+    const outputKZT = document.getElementById("output-kzt");
+    const outputUSD = document.getElementById("output-usd");
+    const outputEUR = document.getElementById("output-eur");
+
+    function updateConversion() {
+        const amount = parseFloat(amountInput.value) || 0;
+        const selectedCurrency = currencySelect.value;
+
+        let kzt = "-";
+        let usd = "-";
+        let eur = "-";
+
+        if (selectedCurrency === "KZT") {
+            usd = (amount / rates.USD.sell).toFixed(2);
+            eur = (amount / rates.EUR.sell).toFixed(2);
+            kzt = amount;
+        } else if (selectedCurrency === "USD") {
+            kzt = (amount * rates.USD.buy).toFixed(2);
+            eur = ((amount * rates.USD.buy) / rates.EUR.sell).toFixed(2);
+            usd == amount;
+        } else if (selectedCurrency === "EUR") {
+            kzt = (amount * rates.EUR.buy).toFixed(2);
+            usd = ((amount * rates.EUR.buy) / rates.USD.sell).toFixed(2);
+            eur == amount
+        }
+
+        outputKZT.textContent = kzt;
+        outputUSD.textContent = usd;
+        outputEUR.textContent = eur;
+    }
+
+    amountInput.addEventListener("input", updateConversion);
+    currencySelect.addEventListener("change", updateConversion);
+
+    updateConversion();
+</script>
+</body>
+</html>
